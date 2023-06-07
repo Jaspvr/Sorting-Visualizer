@@ -11,6 +11,8 @@ let heightFactor = 4;
 let speedFactor = 100;
 let unsorted_array = new Array(numOfBars);
 
+let algotouse = "";
+
 slider.addEventListener("input", function () {
   numOfBars = slider.value;
   maxRange = slider.value;
@@ -23,38 +25,14 @@ speed.addEventListener("change", (e) => {
   speedFactor = parseInt(e.target.value);
 });
 
-let algotouse = "";
-
 select_algo.addEventListener("change", function () {
   algotouse = select_algo.value;
 });
-
-function randomNum(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function createRandomArray() {
-  let array = new Array(numOfBars);
-  for (let i = 0; i < numOfBars; i++) {
-    array[i] = randomNum(minRange, maxRange);
-  }
-
-  return array;
-}
 
 document.addEventListener("DOMContentLoaded", function () {
   unsorted_array = createRandomArray();
   renderBars(unsorted_array);
 });
-
-function renderBars(array) {
-  for (let i = 0; i < numOfBars; i++) {
-    let bar = document.createElement("div");
-    bar.classList.add("bar");
-    bar.style.height = array[i] * heightFactor + "px";
-    bars_container.appendChild(bar);
-  }
-}
 
 randomize_array.addEventListener("click", function () {
   unsorted_array = createRandomArray();
@@ -66,10 +44,139 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function selectionSort(array){
-
-
+function renderBars(array) {
+  for (let i = 0; i < numOfBars; i++) {
+    let bar = document.createElement("div");
+    bar.classList.add("bar");
+    bar.style.height = array[i] * heightFactor + "px";
+    bars_container.appendChild(bar);
+  }
 }
+
+function createRandomArray() {
+  let array = new Array(numOfBars);
+  for (let i = 0; i < numOfBars; i++) {
+    array[i] = randomNum(minRange, maxRange);
+  }
+
+  return array;
+}
+
+function randomNum(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+async function InsertionSort(array){
+  let bars = document.getElementsByClassName("bar");
+  var firstIndex;
+  var secondIndex = 1;
+  var tempValue;
+  //move through the array until the end
+  while(secondIndex < array.length){
+    tempValue = array[secondIndex];
+    firstIndex = secondIndex -1;
+    //only the firstIndex is being updated so dont use secondIndex for any
+    //keep swapping back until in order by moving the previous one ahead
+    while(firstIndex >= 0 && tempValue < array[firstIndex]){
+        array[firstIndex+1] = array[firstIndex];
+        
+        //give the current bars coloour and update their height on the screen
+        bars[firstIndex+1].style.height = array[firstIndex+1] * heightFactor + "px";
+        bars[firstIndex + 1].style.backgroundColor = "lightgreen";
+        //delay
+        await sleep(speedFactor);
+
+        //update colour of all bars, (lightgreen to black)
+        for (let k = 0; k < bars.length; k++) {
+          if (k != firstIndex + 1) {
+            bars[k].style.backgroundColor = "black";
+          }
+        }
+      firstIndex--;
+
+    }
+    //since we kept the original second index now we can update it to the correct place
+    array[firstIndex+1] = tempValue;
+    bars[firstIndex + 1].style.height = array[firstIndex + 1] * heightFactor + "px";
+    secondIndex++;
+  }
+  //update colour of all bars (essentially just the last lightgreen bar)
+  for (let k = 0; k < bars.length; k++) {
+    bars[k].style.backgroundColor = "black";
+  }
+  //done
+  return array;
+}
+
+
+async function swap(array, bars, left, right){
+  var left1 = array[left];
+  var right1 = array[right];
+
+  array[left] = right1;
+  array[right] = left1;
+  bars[left].style.height = array[left]*heightFactor + "px";
+  bars[left].style.backgroundColor = "lightgreen";
+  bars[right].style.height = array[right]*heightFactor + "px";
+  bars[right].style.backgroundColor = "lightgreen";
+  await sleep(speedFactor);
+}
+
+async function quickSort(array, leftPointer, rightPointer) {
+  var temp;
+  let bars = document.getElementsByClassName("bar");
+  if (array.length > 1) {
+    let bars = document.getElementsByClassName("bar");
+    let pivotIndex = Math.floor((rightPointer + leftPointer) / 2);
+    var pivot = array[pivotIndex]; //middle element
+    bars[pivotIndex].style.backgroundColor = "red";
+ 
+    
+    for (let i = 0; i < bars.length; i++) {
+      if (i != pivotIndex) {
+        bars[i].style.backgroundColor = "black";
+      }
+    }
+ 
+ 
+    i = leftPointer;
+    j = rightPointer; 
+    while (i <= j) {
+      while (array[i] < pivot) {
+        i++;
+      }
+      while (array[j] > pivot) {
+        j--;
+      }
+      if (i <= j) {
+        await swap(array, bars, i, j); //sawpping two elements
+        i++;
+        j--;
+      }
+    }
+    temp = i;
+   
+     //index returned from partition
+    if (leftPointer < temp - 1) {
+      //more elements on the leftPointer side of the pivot
+      await quickSort(array, leftPointer, temp - 1);
+    }
+    if (temp < rightPointer) {
+      //more elements on the rightPointer side of the pivot
+      await quickSort(array, temp, rightPointer);
+    }
+  }
+ 
+ 
+  for (let i = 0; i < bars.length; i++) {
+    bars[i].style.backgroundColor = "black";
+  }
+  return array;
+ }
+ 
+ 
+
+
 
 async function bubbleSort(array) {
   let bars = document.getElementsByClassName("bar");
@@ -95,6 +202,8 @@ async function bubbleSort(array) {
   }
   return array;
 }
+
+
 
 sort_btn.addEventListener("click", function () {
   switch (algotouse) {
