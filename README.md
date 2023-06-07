@@ -8,9 +8,9 @@ Visually displays several different methods of sorting
 - [x] Represent the random array with rectangles
 - [x] Create bubble sorting algorithm and add it into the page
 - [ ] Selection sort
-- [ ] Insertion Sort
+- [x] Insertion Sort
 - [ ] Heap Sort
-- [ ] Quick Sort
+- [x] Quick Sort
 - [ ] Bucket Sort
 - [ ] Counting Sort
 - [ ] Radix Sort
