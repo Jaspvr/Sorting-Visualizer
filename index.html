@@ -8,10 +8,11 @@
     <title>Sorting Visualizer</title>
   </head>
   <body>
+    <div class="control-bar">
     <div class="container">
       <div class="bars_container" id="bars_container"></div>
       <div class="buttons_container">
-        <!-- <label for="slider">Array Size:</label> -->
+        <label for="slider" class = "slider-label">Array Size:</label>
         <input
           type="range"
           id="slider"
@@ -21,19 +22,23 @@
           value="50"
         />
         <select name="" id="speed">
+          <option value="" disabled selected>Select Speed</option>
           <option value="100">Slow</option>
           <option value="50">Medium</option>
           <option value="10">Fast</option>
         </select>
         <select name="" id="algo">
+          <option value="" disabled selected>Select Algorithm</option>
           <option value="bubble">Bubble Sort</option>
-          <!-- <option value="insertion">Insertion Sort</option>
-          <option value="heap">Heap Sort</option>
-          <option value="merge">Merge Sort</option>
-          <option value="quick">Quick Sort</option> -->
+          
+          <option value="insertion">Insertion Sort</option>
+          <!-- <option value="heap">Heap Sort</option>
+          <option value="merge">Merge Sort</option> -->
+          <option value="quick">Quick Sort</option> 
         </select>
-        <button id="randomize_array_btn">Randomize Array</button>
+        <button id="randomize_array_btn">Generate New Array</button>
         <button id="sort_btn">Sort</button>
+      </div>
       </div>
       
     </div>
