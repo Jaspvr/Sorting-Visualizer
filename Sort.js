@@ -98,6 +98,14 @@ function fillBars(exclude1, exclude2){
   }
 }
 
+//bar colour and height change
+function cAndHChange(index1, index2, bars, array){
+  bars[index1].style.height = array[index1] * heightFactor + "px";
+  bars[index1].style.backgroundColor = "lightgreen";
+  bars[index2].style.height = array[index2] * heightFactor + "px";
+  bars[index2].style.backgroundColor = "lightgreen";
+}
+
 //random array to be made into bars
 function createRandomArray() {
   let array = new Array(numOfBars);
@@ -124,16 +132,15 @@ async function bubbleSort(array){
       fillBars(-1, -1);
       //find max, go until the length-1 - i(number of times we have put the value at the end)
       while(j < array.length-(i+1)){
+          fillBars(-1, -1);
           if(array[j] > array[j+1]){
               //swap
               var temp = array[j];
               array[j] = array[j+1];
               array[j+1] = temp;
-              bars[j].style.height = array[j] * heightFactor + "px";
-              bars[j].style.backgroundColor = "lightgreen";
-              bars[j+1].style.height = array[j+1] * heightFactor + "px";
-              bars[j+1].style.backgroundColor = "lightgreen";
+              cAndHChange(j, j+1, bars, array);
               swapped = true;
+              await sleep(speedFactor);
           }
           j++;
       }
@@ -145,6 +152,54 @@ async function bubbleSort(array){
       i++;
   }
 
+}
+
+async function heapSort(array){
+  let bars = document.getElementsByClassName("bar");
+  //first convert array into a heap data structure
+  //we can do this by calling a heapify function starting from last non leaf node n/2-1
+  for(var i = array.length/2 -1; i>=0; i--){
+      heapify(array, array.length, i);
+  }
+  
+  var i = array.length-1;
+  while(i>0){
+      //delete the root node and replace it with the last node in the heap
+      //remove new last node, and heapify the elements again
+      //continue process until sorted array, then reverse the order
+      var temp = array[0];
+      array[0] = array[i];
+      array[i] = temp;
+      cAndHChange(i, 0, bars, array);
+      await sleep(speedFactor);
+     
+      heapify(array, i, 0);
+      i--;
+      fillBars(-1, -1);
+  }
+  fillBars(-1, -1);
+  return array;
+}
+async function heapify(array, length, rootIndex){
+  let bars = document.getElementsByClassName("bar");
+  var left = 2*rootIndex + 1;
+  var right = 2*rootIndex + 2;
+  var root = rootIndex;
+  //largest with left child, if child is bigger then assign value to largest
+  if (left < length && array[left] > array[root]) {
+      root = left;
+  }
+  //largest with right child
+  if (right< length && array[right] > array[root]) {
+      root = right;
+  }
+  // If the root is not the largest, swap and recursively heapify the affected subtree
+  if (root != rootIndex) {
+      var temp = array[rootIndex];
+      array[rootIndex] = array[root];
+      array[root] = temp;
+      heapify(array, length, root);
+  }
 }
 
 
@@ -171,10 +226,7 @@ async function selectionSort(array){
         array[count] = minElement;
         array[minElementIndex] = placeHolder;
         //give the current bars coloour and update their height on the screen
-        bars[count].style.height = array[count] * heightFactor + "px";
-        bars[count].style.backgroundColor = "lightgreen";
-        bars[minElementIndex].style.height = array[minElementIndex] * heightFactor + "px";
-        bars[minElementIndex].style.backgroundColor = "lightgreen";
+        cAndHChange(count, minElementIndex, bars, array);
         //delay
         await sleep(speedFactor);
       }
@@ -206,7 +258,7 @@ async function insertionSort(array){
         await sleep(speedFactor);
 
         //update colour of all bars, (lightgreen to black)
-        fillBars(-1, -1);
+        fillBars(firstIndex+1, -1);
       firstIndex--;
 
     }
@@ -227,10 +279,8 @@ async function swap(array, bars, left, right){
 
   array[left] = right1;
   array[right] = left1;
-  bars[left].style.height = array[left]*heightFactor + "px";
-  bars[left].style.backgroundColor = "lightgreen";
-  bars[right].style.height = array[right]*heightFactor + "px";
-  bars[right].style.backgroundColor = "lightgreen";
+  cAndHChange(left, right, bars, array);
+  
   await sleep(speedFactor);
 }
 async function quickSort(array, leftPointer, rightPointer) {
@@ -241,9 +291,9 @@ async function quickSort(array, leftPointer, rightPointer) {
     let pivotIndex = Math.floor((rightPointer + leftPointer) / 2);
     var pivot = array[pivotIndex]; //middle element
     bars[pivotIndex].style.backgroundColor = "red";
-
+ 
     fillBars(-1, -1);
-
+ 
     i = leftPointer;
     j = rightPointer; 
     while (i <= j) {
@@ -271,6 +321,7 @@ async function quickSort(array, leftPointer, rightPointer) {
       await quickSort(array, temp, rightPointer);
     }
   }
+ 
   fillBars(-1, -1);
   return array;
  }
