@@ -7,8 +7,8 @@ Visually displays several different sorting algorithms
 - [x] Bubble sort
 - [x] Selection sort
 - [x] Insertion Sort
-- [x] Heap Sort
-- [ ] Quick Sort
+- [ ] Heap Sort
+- [x] Quick Sort
 - [ ] ~~Bucket Sort~~ not really applicable
 - [ ] ~~Counting Sort~~ not really applicable
 - [ ] ~~Radix Sort~~ not really applicable
@@ -21,7 +21,7 @@ Visually displays several different sorting algorithms
 - [x] Add selection sort visualization
 - [x] Add insertion sort visualization
 - [ ] Add heap sort visualization
-- [ ] Add quick sort visualization
+- [x] Add quick sort visualization
 - [ ] Add merge sort visualization
 - [ ] Done
 
