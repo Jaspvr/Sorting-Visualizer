@@ -121,6 +121,46 @@ function randomNum(min, max) {
 }
 
 //SORTING ALGORITHMS
+async function quickSort(array, low, high) {
+  let bars = document.getElementsByClassName("bar");
+  if (low < high) {
+  //Partitioning
+  //far right is pivot
+  var pivot = array[high];
+
+  //lower element index
+  var i = low - 1;
+
+  //iterate through array
+  for (var j = low; j < high; j++) {
+    fillBars(-1, -1);
+      if (array[j] <= pivot) {
+          i++;
+          //Swap if element is less than equal to pivot
+          var temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+          cAndHChange(i, j, bars, array);
+          await sleep(speedFactor);
+      }
+  }
+
+  //Swap
+  var temp = array[i + 1];
+  array[i + 1] = array[high];
+  array[high] = temp;
+  cAndHChange(i+1, high, bars, array);
+
+  var pivotIndex = i + 1;
+
+  //Left and right subarrays
+  quickSort(array, low, pivotIndex - 1);
+  quickSort(array, pivotIndex + 1, high);
+  }
+  fillBars(-1,-1);
+  return array;
+}
+
 async function bubbleSort(array){
   let bars = document.getElementsByClassName("bar");
   var i = 0;
@@ -272,59 +312,3 @@ async function insertionSort(array){
   //done
   return array;
 }
-
-async function swap(array, bars, left, right){
-  var left1 = array[left];
-  var right1 = array[right];
-
-  array[left] = right1;
-  array[right] = left1;
-  cAndHChange(left, right, bars, array);
-  
-  await sleep(speedFactor);
-}
-async function quickSort(array, leftPointer, rightPointer) {
-  var temp;
-  let bars = document.getElementsByClassName("bar");
-  if (array.length > 1) {
-    let bars = document.getElementsByClassName("bar");
-    let pivotIndex = Math.floor((rightPointer + leftPointer) / 2);
-    var pivot = array[pivotIndex]; //middle element
-    bars[pivotIndex].style.backgroundColor = "red";
- 
-    fillBars(-1, -1);
- 
-    i = leftPointer;
-    j = rightPointer; 
-    while (i <= j) {
-      while (array[i] < pivot) {
-        i++;
-      }
-      while (array[j] > pivot) {
-        j--;
-      }
-      if (i <= j) {
-        await swap(array, bars, i, j); //sawpping two elements
-        i++;
-        j--;
-      }
-    }
-    temp = i;
-   
-     //index returned from partition
-    if (leftPointer < temp - 1) {
-      //more elements on the leftPointer side of the pivot
-      await quickSort(array, leftPointer, temp - 1);
-    }
-    if (temp < rightPointer) {
-      //more elements on the rightPointer side of the pivot
-      await quickSort(array, temp, rightPointer);
-    }
-  }
- 
-  fillBars(-1, -1);
-  return array;
- }
-
-
-
