@@ -27,7 +27,7 @@ sort_btn.addEventListener("click", function () {
   } else if (algo === "bubble") {
     bubbleSort(unsorted_array);
   } else if (algo === "merge") {
-      mergeSort(unsorted_array);
+    mergeSort(unsorted_array);
   } else if (algo === "quick") {
     quickSort(unsorted_array, 0, unsorted_array.length - 1);
   } else {
@@ -312,3 +312,73 @@ async function insertionSort(array){
   //done
   return array;
 }
+
+async function mergeSort(array) {
+  let bars = document.getElementsByClassName("bar");
+  //if empty or sorted
+  if (array == null || array.length <= 1) {
+      fillBars(-1, -1);
+      return array; 
+  }
+  var temp = new Array(array.length);
+  mergeSort(array, temp, 0, array.length - 1);
+}
+
+async function mergeSort(array, temp, low, high) {
+  let bars = document.getElementsByClassName("bar");
+  //base case
+  if (low < high) {
+    var mid = (low + high) / 2;
+    //merge sort left and right halfs
+    mergeSort(array, temp, low, mid);
+    mergeSort(array, temp, mid + 1, high);
+    
+    //Put the two halfs together:
+    
+    //make a copy of the array
+    for (var i = low; i <= high; i++) {
+        temp[i] = array[i];
+        bars[i].style.backgroundColor = "yellow";
+        await sleep(speedFactor);
+    }
+    //store indices
+    var left = low;
+    var right = mid + 1;
+    var current = low;
+    //merge array and temp array
+    while (left <= mid && right <= high) {
+        if (temp[left] <= temp[right]) {
+            array[current] = temp[left];
+            bars[current].style.height = array[current] * heightFactor + "px";
+            bars[current].style.backgroundColor = "white";
+            await sleep(speedFactor);
+
+            left++;
+        } else {
+            array[current] = temp[right];
+            bars[current].style.height = array[current] * heightFactor + "px";
+            bars[current].style.backgroundColor = "red";
+            await sleep(speedFactor);
+
+            right++;
+        }
+        current++;
+    }
+    //if any elements remain then put then into the final array
+    while (left <= mid) {
+        array[current] = temp[left];
+        bars[current].style.height = array[current] * heightFactor + "px";
+        bars[current].style.backgroundColor = "lightgreen";
+        await sleep(speedFactor);
+
+        left++;
+        current++;
+    }
+  }
+  fillBars(-1, -1);
+    return array;
+}
+
+
+
+
