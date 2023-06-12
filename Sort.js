@@ -217,6 +217,7 @@ async function heapSort(array){
       i--;
       fillBars(-1, -1);
   }
+  console.log("heap");
   fillBars(-1, -1);
   return array;
 }
@@ -315,68 +316,94 @@ async function insertionSort(array){
 
 async function mergeSort(array) {
   let bars = document.getElementsByClassName("bar");
+  console.log("start");
   //if empty or sorted
   if (array == null || array.length <= 1) {
-      fillBars(-1, -1);
-      return array; 
+    // for (let i = 0; i < bars.length; i++) {
+    //   if(i != exclude1 || i!= exclude2){
+    //     bars[i].style.backgroundColor = "black";
+    //     bars[i].style.height = array[i] * heightFactor + "px";
+    //   }
+    // }
+    console.log("merge");
+    for (let i = 0; i < bars.length; i++) {
+
+      bars[i].style.backgroundColor = "black";
+      bars[i].style.height = array[i] * heightFactor + "px";
+      //await sleep(speedFactor);
+    }
+    return array
   }
-  var temp = new Array(array.length);
-  mergeSort(array, temp, 0, array.length - 1);
+  console.log("1");
+   
+  let temp = array.slice();
+
+  mergeSortRec(array, temp, 0, array.length - 1);
 }
 
-async function mergeSort(array, temp, low, high) {
+async function mergeSortRec(array, temp, low, high) {
   let bars = document.getElementsByClassName("bar");
-  //base case
+  fillBars(-1, -1);
   if (low < high) {
-    var mid = (low + high) / 2;
+    var mid = Math.floor((low + high) / 2);
+
     //merge sort left and right halfs
-    mergeSort(array, temp, low, mid);
-    mergeSort(array, temp, mid + 1, high);
+    //console.log("2");
+    mergeSortRec(array, temp, low, mid);
+    mergeSortRec(array, temp, mid + 1, high);
     
     //Put the two halfs together:
-    
-    //make a copy of the array
-    for (var i = low; i <= high; i++) {
-        temp[i] = array[i];
-        bars[i].style.backgroundColor = "yellow";
-        await sleep(speedFactor);
-    }
+  
+    temp = array.slice();
     //store indices
     var left = low;
     var right = mid + 1;
     var current = low;
     //merge array and temp array
     while (left <= mid && right <= high) {
+     
+      
         if (temp[left] <= temp[right]) {
             array[current] = temp[left];
-            bars[current].style.height = array[current] * heightFactor + "px";
-            bars[current].style.backgroundColor = "white";
-            await sleep(speedFactor);
-
             left++;
+            bars[current].style.height = array[current] * heightFactor + "px";
+            //console.log("4");
+            bars[current].style.backgroundColor = "lightgreen";
+            //await sleep(speedFactor);
+            
         } else {
             array[current] = temp[right];
-            bars[current].style.height = array[current] * heightFactor + "px";
-            bars[current].style.backgroundColor = "red";
-            await sleep(speedFactor);
-
             right++;
+            bars[current].style.height = array[current] * heightFactor + "px";
+            //console.log("5");'
         }
+    
+        console.log("a")
         current++;
+        //await sleep(speedFactor);
+        //await sleep(speedFactor);
     }
+    //await sleep(speedFactor);
+    //await sleep(speedFactor);
     //if any elements remain then put then into the final array
     while (left <= mid) {
         array[current] = temp[left];
-        bars[current].style.height = array[current] * heightFactor + "px";
-        bars[current].style.backgroundColor = "lightgreen";
-        await sleep(speedFactor);
-
         left++;
         current++;
+        //let bars = document.getElementsByClassName("bar");
+        //bars[current].style.height = array[current] * heightFactor + "px";
+        //console.log("6");
     }
+    //await sleep(speedFactor);
+    for (let i = 0; i < bars.length; i++) {
+
+      bars[i].style.backgroundColor = "black";
+      bars[i].style.height = array[i] * heightFactor + "px";
+      //await sleep(speedFactor);
+      //await sleep(speedFactor);
+    }
+    //console.log("7");
   }
-  fillBars(-1, -1);
-    return array;
 }
 
 
