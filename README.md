@@ -16,12 +16,12 @@ Visually displays several different sorting algorithms
 - [x] Create html buttons for random array, sort, and picking the sorting type
 - [x] Position the butttons and make them look nice with CSS
 - [x] Represent the random array with rectangles
-- [ ] Clean up front end
+- [ ] ~~Clean up front end~~
 - [x] Add bubble sort visualization
 - [x] Add selection sort visualization
 - [x] Add insertion sort visualization
 - [x] Add heap sort visualization
 - [x] Add quick sort visualization
-- [ ] Add merge sort visualization
-- [ ] Done
+- [ ] ~~Add merge sort visualization~~
+- [x] Done
 
