@@ -1,7 +1,6 @@
 # Sorting-Visualizer
 Visually displays several different sorting algorithms
-# Hosted with AWS: 
-http://visual-sorter.s3-website.ca-central-1.amazonaws.com/
+
 
 
 # //TO DO
